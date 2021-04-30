@@ -1,4 +1,4 @@
-package es.usj.androidapps.alu100495.individualproject.Singletons
+package es.usj.androidapps.alu100495.individualproject.singletons
 
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
 
