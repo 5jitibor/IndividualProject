@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "es.usj.androidapps.alu100495.individualproject"
         minSdkVersion 25
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -43,7 +43,10 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson_version"
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+
 }

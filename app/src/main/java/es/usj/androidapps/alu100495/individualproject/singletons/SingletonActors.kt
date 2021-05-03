@@ -3,17 +3,12 @@ package es.usj.androidapps.alu100495.individualproject.singletons
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
 
 
-class SingletonActors(var dataActors: Array<Actor>?) {
+object SingletonActors{
 
-    val map: MutableMap<Int, Actor> = mutableMapOf()
+    val list: ArrayList<Actor> = arrayListOf()
 
-    init{
-        fillWithContentFromAPI()
-    }
 
-    private fun fillWithContentFromAPI(){
-        for(actor in dataActors!!){
-            map.putIfAbsent(actor.id, actor)
-        }
+    fun fillWithContentFromAPI(dataActors: Array<Actor>){
+        list.addAll(dataActors)
     }
 }

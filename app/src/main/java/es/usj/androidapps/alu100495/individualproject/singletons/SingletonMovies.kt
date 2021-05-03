@@ -1,18 +1,14 @@
 package es.usj.androidapps.alu100495.individualproject.singletons
 
+
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
 
-class SingletonMovies(var dataMovies: Array<Movie>?) {
+object SingletonMovies {
 
-    val map: MutableMap<Int,Movie> = mutableMapOf()
+    val list: ArrayList<Movie> = arrayListOf()
 
-    init{
-        fillWithContentFromAPI()
-    }
 
-    private fun fillWithContentFromAPI(){
-        for(movie in dataMovies!!){
-            map.putIfAbsent(movie.id, movie)
-        }
+    fun fillWithContentFromAPI(dataActors: Array<Movie>){
+        list.addAll(dataActors)
     }
 }

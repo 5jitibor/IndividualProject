@@ -22,7 +22,7 @@ class APIActorAsyncTask : AsyncTask<Any, Any, Array<Actor>>() {
         try {
             val input: InputStream = BufferedInputStream(urlConnection.inputStream)
             val response = readStream(input)
-            val result =  Gson().fromJson(response, Array<Actor>::class.java)
+            var result =  Gson().fromJson(response, Array<Actor>::class.java)
             return result
         }catch (e: Exception){
             Log.e("error",e.printStackTrace().toString())

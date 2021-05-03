@@ -20,6 +20,7 @@
     <ProgressBar
         android:layout_width="97dp"
         android:layout_height="85dp"
+        android:foregroundTint="#FF0303"
         android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
