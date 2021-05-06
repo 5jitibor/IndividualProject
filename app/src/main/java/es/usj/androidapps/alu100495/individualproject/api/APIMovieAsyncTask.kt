@@ -29,10 +29,11 @@ class APIMovieAsyncTask : AsyncTask<Any, Any, Array<Movie>>() {
             return result
         }catch (e: Exception){
             Log.e("error",e.printStackTrace().toString())
-
+            println("ok")
         } finally {
             urlConnection.disconnect()
         }
+        println("ok")
         return null
     }
 

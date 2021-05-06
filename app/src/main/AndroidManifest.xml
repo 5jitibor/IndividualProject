@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IndividualProject"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.Contact"></activity>
+        <activity android:name=".activity.ViewMovie"></activity>
+        <activity android:name=".activity.Contact" />
         <activity android:name=".activity.Home" />
         <activity android:name=".activity.Splash">
             <intent-filter>

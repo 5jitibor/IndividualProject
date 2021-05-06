@@ -4,25 +4,29 @@ package es.usj.androidapps.alu100495.individualproject.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import es.usj.androidapps.alu100495.individualproject.R
-import es.usj.androidapps.alu100495.individualproject.activity.homeContext
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
 import kotlinx.android.synthetic.main.actor_item_layout.view.*
 
-class ActorAdapter: RecyclerView.Adapter<ActorAdapter.ActorHolder>() {
-
+class ActorAdapter: RecyclerView.Adapter<ActorAdapter.ActorHolder>(),Filterable {
+    var actorList: ArrayList<Actor> = arrayListOf()
+    init {
+        actorList.addAll(SingletonActors.list)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
-        val layoutInflater = LayoutInflater.from(homeContext)
+        val layoutInflater = LayoutInflater.from(parent.context)
         return ActorHolder(layoutInflater.inflate(R.layout.actor_item_layout,parent,false))
     }
 
     override fun onBindViewHolder(holder: ActorHolder, position: Int) {
-        holder.render(SingletonActors.list[position])
+        holder.render(actorList[position])
     }
 
-    override fun getItemCount(): Int = SingletonActors.list.size
+    override fun getItemCount(): Int = actorList.size
 
 
     class ActorHolder(val view:View):RecyclerView.ViewHolder(view){
@@ -30,5 +34,34 @@ class ActorAdapter: RecyclerView.Adapter<ActorAdapter.ActorHolder>() {
             view.tvName.text = actor.name
 
         }
+    }
+
+    override fun getFilter(): Filter {
+        var filter  = FilterAdapterActor()
+        return filter
+    }
+    inner class FilterAdapterActor : Filter(){
+        override fun performFiltering(constraint: CharSequence?): FilterResults? {
+            var listFiltered: ArrayList<Actor> = arrayListOf()
+
+            if(!constraint.toString().isEmpty()){
+                listFiltered = SingletonActors.list.filter { it.name.toLowerCase().startsWith(constraint.toString().toLowerCase()) } as ArrayList<Actor>
+            }
+            else{
+                listFiltered.addAll(SingletonActors.list)
+            }
+            val filterResult  = FilterResults()
+            filterResult.values = listFiltered
+            return filterResult
+        }
+
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            actorList.clear()
+            if (results != null) {
+                actorList.addAll(results.values as Collection<Actor>)
+                notifyDataSetChanged()
+            }
+        }
+
     }
 }

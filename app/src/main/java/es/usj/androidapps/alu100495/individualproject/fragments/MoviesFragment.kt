@@ -15,8 +15,8 @@ import kotlinx.android.synthetic.main.fragment_movies.*
 import kotlinx.android.synthetic.main.movie_item_layout.*
 
 
-class MoviesFragment : Fragment() {
-
+class MoviesFragment(adapter: MovieAdapter)  : Fragment() {
+    var adapter = adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +37,6 @@ class MoviesFragment : Fragment() {
 
 
     fun initRecycler(){
-        val adapter = MovieAdapter()
         rvMovies.layoutManager = LinearLayoutManager(context)
         rvMovies.adapter = adapter
 

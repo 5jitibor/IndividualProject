@@ -17,7 +17,8 @@ import kotlinx.android.synthetic.main.fragment_actors.*
 import kotlinx.android.synthetic.main.fragment_movies.*
 
 
-class ActorsFragment : Fragment() {
+class ActorsFragment(adapter: ActorAdapter) : Fragment() {
+    var adapter = adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,6 @@ class ActorsFragment : Fragment() {
 
 
     fun initRecycler(){
-        val adapter = ActorAdapter()
         rvActors.layoutManager = LinearLayoutManager(context)
         rvActors.adapter = adapter
     }
