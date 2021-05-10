@@ -1,15 +1,12 @@
 package es.usj.androidapps.alu100495.individualproject.api
 
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
+
 import android.os.AsyncTask
 import android.util.Log
 import com.google.gson.Gson
 import es.usj.androidapps.alu100495.individualproject.*
-import es.usj.androidapps.alu100495.individualproject.activity.Home
-import es.usj.androidapps.alu100495.individualproject.activity.Splash
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
 import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.io.InputStream
@@ -26,10 +23,12 @@ class APIMovieAsyncTask : AsyncTask<Any, Any, Array<Movie>>() {
             val input: InputStream = BufferedInputStream(urlConnection.inputStream)
             val response = readStream(input)
             val result =  Gson().fromJson(response, Array<Movie>::class.java)
+            val arrayList : ArrayList<Movie> = arrayListOf()
+            arrayList.addAll(result)
+            SingletonDatabase.db.room.MovieDao().insert(arrayList)
             return result
         }catch (e: Exception){
             Log.e("error",e.printStackTrace().toString())
-            println("ok")
         } finally {
             urlConnection.disconnect()
         }
@@ -37,7 +36,7 @@ class APIMovieAsyncTask : AsyncTask<Any, Any, Array<Movie>>() {
         return null
     }
 
-    fun readStream(inputStream: InputStream) : String {
+    private fun readStream(inputStream: InputStream) : String {
         val br = BufferedReader(InputStreamReader(inputStream))
         val total = StringBuilder()
         while (true) {

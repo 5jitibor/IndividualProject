@@ -1,12 +1,11 @@
 package es.usj.androidapps.alu100495.individualproject.api
 
+
 import android.os.AsyncTask
-import android.util.Log
 import com.google.gson.Gson
-import es.usj.androidapps.alu100495.individualproject.PASSWORD
-import es.usj.androidapps.alu100495.individualproject.SERVER
-import es.usj.androidapps.alu100495.individualproject.USER
+
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
 import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.io.InputStream
@@ -22,10 +21,14 @@ class APIActorAsyncTask : AsyncTask<Any, Any, Array<Actor>>() {
         try {
             val input: InputStream = BufferedInputStream(urlConnection.inputStream)
             val response = readStream(input)
-            var result =  Gson().fromJson(response, Array<Actor>::class.java)
+            val result =  Gson().fromJson(response, Array<Actor>::class.java)
+
+            val arrayList : ArrayList<Actor> = arrayListOf()
+            arrayList.addAll(result)
+            SingletonDatabase.db.room.ActorDao().insert(arrayList)
             return result
         }catch (e: Exception){
-            Log.e("error",e.printStackTrace().toString())
+            e.printStackTrace()
         } finally {
             urlConnection.disconnect()
         }

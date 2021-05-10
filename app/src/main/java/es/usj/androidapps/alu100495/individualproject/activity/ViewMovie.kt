@@ -10,7 +10,7 @@ class ViewMovie : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_movie)
-        var movie : Movie = intent.getSerializableExtra("movie") as Movie
+        val movie : Movie = intent.getSerializableExtra("movie") as Movie
         tvtitle.text = movie.title
     }
 }

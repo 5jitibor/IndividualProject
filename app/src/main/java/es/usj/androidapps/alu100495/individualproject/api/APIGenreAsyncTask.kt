@@ -1,14 +1,11 @@
 package es.usj.androidapps.alu100495.individualproject.api
 
-import android.app.AlertDialog
-import android.content.Intent
+
 import android.os.AsyncTask
 import android.util.Log
 import com.google.gson.Gson
-import es.usj.androidapps.alu100495.individualproject.PASSWORD
-import es.usj.androidapps.alu100495.individualproject.SERVER
-import es.usj.androidapps.alu100495.individualproject.USER
 import es.usj.androidapps.alu100495.individualproject.classData.Genre
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
 import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.io.InputStream
@@ -25,6 +22,10 @@ class APIGenreAsyncTask : AsyncTask<Any, Any, Array<Genre>>() {
             val input: InputStream = BufferedInputStream(urlConnection.inputStream)
             val response = readStream(input)
             val result =  Gson().fromJson(response, Array<Genre>::class.java)
+
+            val arrayList : ArrayList<Genre> = arrayListOf()
+            arrayList.addAll(result)
+            SingletonDatabase.db.room.GenreDao().insert(arrayList)
             return result
         }catch (e: Exception){
             Log.e("error",e.printStackTrace().toString())

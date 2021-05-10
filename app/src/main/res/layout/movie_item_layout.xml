@@ -24,12 +24,13 @@
                 android:layout_alignParentTop="true"
                 android:layout_height="100dp"
                 android:layout_width="100dp"
-                android:layout_marginRight="16dp" />
+                android:layout_marginRight="16dp"
+                android:src="@drawable/icon"/>
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
-                android:layout_toLeftOf="@id/star_button_movie"
+                android:layout_toLeftOf="@id/like_button_movie"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/movie_photo"
@@ -49,7 +50,7 @@
                 android:theme="@style/RatingBar" />
 
             <com.like.LikeButton
-                android:id="@+id/star_button_movie"
+                android:id="@+id/like_button_movie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/stars"

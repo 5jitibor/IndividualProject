@@ -1,5 +1,9 @@
 package es.usj.androidapps.alu100495.individualproject.classData
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 
-data class Actor(val id: Int, val name:String): Serializable
+@Entity
+data class Actor(@PrimaryKey val id: Int, val name:String, var like: Boolean): Serializable
+

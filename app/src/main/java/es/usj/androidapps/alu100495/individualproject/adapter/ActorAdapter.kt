@@ -29,22 +29,27 @@ class ActorAdapter: RecyclerView.Adapter<ActorAdapter.ActorHolder>(),Filterable 
     override fun getItemCount(): Int = actorList.size
 
 
-    class ActorHolder(val view:View):RecyclerView.ViewHolder(view){
+    class ActorHolder(private val view:View):RecyclerView.ViewHolder(view){
         fun render(actor: Actor){
             view.tvName.text = actor.name
+            view.like_button_actor.isLiked = actor.like
+            view.like_button_actor.setOnClickListener{
+                view.like_button_actor.isLiked = !view.like_button_actor.isLiked
+                actor.like = view.like_button_actor.isLiked
+            }
+
 
         }
     }
 
     override fun getFilter(): Filter {
-        var filter  = FilterAdapterActor()
-        return filter
+        return FilterAdapterActor()
     }
     inner class FilterAdapterActor : Filter(){
-        override fun performFiltering(constraint: CharSequence?): FilterResults? {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
             var listFiltered: ArrayList<Actor> = arrayListOf()
 
-            if(!constraint.toString().isEmpty()){
+            if(constraint.toString().isNotEmpty()){
                 listFiltered = SingletonActors.list.filter { it.name.toLowerCase().startsWith(constraint.toString().toLowerCase()) } as ArrayList<Actor>
             }
             else{

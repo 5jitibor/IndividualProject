@@ -8,16 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.adapter.GenreAdapter
-import es.usj.androidapps.alu100495.individualproject.adapter.MovieAdapter
 import kotlinx.android.synthetic.main.fragment_genres.*
 
 
-class GenresFragment(adapter: GenreAdapter) : Fragment() {
-    var adapter = adapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+class GenresFragment(private var adapter: GenreAdapter) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +27,7 @@ class GenresFragment(adapter: GenreAdapter) : Fragment() {
     }
 
 
-    fun initRecycler(){
+    private fun initRecycler(){
         rvGenres.layoutManager = LinearLayoutManager(context)
         rvGenres.adapter = adapter
     }

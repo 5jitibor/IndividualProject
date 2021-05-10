@@ -1,10 +1,9 @@
 package es.usj.androidapps.alu100495.individualproject.fragments
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import java.util.ArrayList
+import java.util.*
 
 class ViewPagerAdapter(supportFragmentManager: FragmentManager): FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -20,7 +19,7 @@ class ViewPagerAdapter(supportFragmentManager: FragmentManager): FragmentPagerAd
     }
 
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return mFragmentTitleList[position]
     }
     fun addFragment(fragment: Fragment,title: String){

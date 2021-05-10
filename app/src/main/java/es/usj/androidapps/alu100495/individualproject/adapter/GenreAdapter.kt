@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.classData.Genre
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonGenres
+import kotlinx.android.synthetic.main.actor_item_layout.view.*
 import kotlinx.android.synthetic.main.genre_item_layout.view.*
 
 
@@ -32,16 +33,23 @@ class GenreAdapter: RecyclerView.Adapter<GenreAdapter.GenreHolder>(),Filterable 
     class GenreHolder(val view: View): RecyclerView.ViewHolder(view){
         fun render(genre: Genre){
             view.tvType.text = genre.name
+            view.like_button_genre.isLiked = genre.like
+            view.like_button_genre.setOnClickListener{
+                view.like_button_genre.isLiked = !view.like_button_genre.isLiked
+                genre.like = view.like_button_genre.isLiked
+
+
+            }
 
         }
     }
 
     override fun getFilter(): Filter {
-        var filter  = FilterAdapterGenre()
+        val filter  = FilterAdapterGenre()
         return filter
     }
     inner class FilterAdapterGenre : Filter(){
-        override fun performFiltering(constraint: CharSequence?): FilterResults? {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
             var listFiltered: ArrayList<Genre> = arrayListOf()
 
             if(!constraint.toString().isEmpty()){

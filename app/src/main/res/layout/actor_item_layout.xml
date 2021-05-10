@@ -26,7 +26,7 @@ android:padding="5dp">
             android:textSize="25sp" />
 
         <com.like.LikeButton
-            android:id="@+id/star_button_actor"
+            android:id="@+id/like_button_actor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

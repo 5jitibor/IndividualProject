@@ -39,18 +39,22 @@ class Home : AppCompatActivity() {
         val search = menu?.findItem(R.id.action_search)
         val searchView = search?.actionView as SearchView
         searchView.queryHint = "Search Something!"
-        var listenerSearch = object : SearchView.OnQueryTextListener {
+        val listenerSearch = object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (adapter.getItem(0).isResumed) {
-                    adapterM.filter.filter(newText)
-                } else if (adapter.getItem(1).isResumed) {
-                    adapterA.filter.filter(newText)
-                } else {
-                    adapterG.filter.filter(newText)
+                when {
+                    adapter.getItem(0).isResumed -> {
+                        adapterM.filter.filter(newText)
+                    }
+                    adapter.getItem(1).isResumed -> {
+                        adapterA.filter.filter(newText)
+                    }
+                    else -> {
+                        adapterG.filter.filter(newText)
+                    }
                 }
 
                 return false
@@ -59,11 +63,11 @@ class Home : AppCompatActivity() {
 
         }
 
-         searchView.setOnQueryTextListener(listenerSearch)
+        searchView.setOnQueryTextListener(listenerSearch)
 
         tabs.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                if (tab.getPosition()==0) {
+                if (tab.position ==0) {
                     adapterM.filter.filter(searchView.query.toString())
                 } else if (tab.getPosition()==1) {
                     adapterA.filter.filter(searchView.query.toString())
@@ -101,7 +105,6 @@ class Home : AppCompatActivity() {
         adapter.addFragment(GenresFragment(adapterG), "Genres")
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
-
 
         tabs.getTabAt(0)!!.setIcon(R.drawable.ic_baseline_movie_24)
         tabs.getTabAt(1)!!.setIcon(R.drawable.ic_baseline_person_24)
