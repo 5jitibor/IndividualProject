@@ -16,16 +16,14 @@ import java.net.URL
 
 class APIMovieAsyncTask : AsyncTask<Any, Any, Array<Movie>>() {
     override fun doInBackground(vararg params: Any?): Array<Movie>? {
-        val url = URL("http://$SERVER:8888/user/getMovies.php?user=$USER&pass=$PASSWORD")
+        val url = URL("http://$SERVER:$PORT/user/getMovies.php?user=$USER&pass=$PASSWORD")
         val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
 
         try {
             val input: InputStream = BufferedInputStream(urlConnection.inputStream)
             val response = readStream(input)
             val result =  Gson().fromJson(response, Array<Movie>::class.java)
-            val arrayList : ArrayList<Movie> = arrayListOf()
-            arrayList.addAll(result)
-            SingletonDatabase.db.room.MovieDao().insert(arrayList)
+            SingletonDatabase.db.room.MovieDao().insert(result)
             return result
         }catch (e: Exception){
             Log.e("error",e.printStackTrace().toString())

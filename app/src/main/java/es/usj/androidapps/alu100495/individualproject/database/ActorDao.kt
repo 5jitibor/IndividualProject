@@ -1,8 +1,6 @@
 package es.usj.androidapps.alu100495.individualproject.database
 
 
-import androidx.lifecycle.LiveData
-
 import androidx.room.*
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
 
@@ -10,19 +8,19 @@ import es.usj.androidapps.alu100495.individualproject.classData.Actor
 interface ActorDao {
 
     @Query("SELECT * FROM $TABLE_ACTORS")
-    fun getAllActors(): LiveData<List<Actor>>
+    suspend fun getAll(): Array<Actor>
 
     @Query("SELECT * FROM $TABLE_ACTORS WHERE id = :id ")
-    fun getByIdActors(id:Int): Actor
+    suspend fun getById(id:Int): Actor
 
     @Update
-    fun update(actor: Actor)
+    suspend fun update(actor: Actor)
 
-    @Insert
-    fun insert(actor: ArrayList<Actor>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(actor: Array<Actor>)
 
     @Delete
-    fun delete(actor:Actor)
+    suspend fun delete(actor:Actor)
 
 
 

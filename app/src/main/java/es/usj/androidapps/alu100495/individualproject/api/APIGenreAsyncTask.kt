@@ -15,17 +15,15 @@ import java.net.URL
 
 class APIGenreAsyncTask : AsyncTask<Any, Any, Array<Genre>>() {
     override fun doInBackground(vararg params: Any?): Array<Genre>? {
-        val url = URL("http://$SERVER:8888/user/getGenres.php?user=$USER&pass=$PASSWORD")
+        val url = URL("http://$SERVER:$PORT/user/getGenres.php?user=$USER&pass=$PASSWORD")
         val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
 
         try {
             val input: InputStream = BufferedInputStream(urlConnection.inputStream)
             val response = readStream(input)
             val result =  Gson().fromJson(response, Array<Genre>::class.java)
+            SingletonDatabase.db.room.GenreDao().insert(result)
 
-            val arrayList : ArrayList<Genre> = arrayListOf()
-            arrayList.addAll(result)
-            SingletonDatabase.db.room.GenreDao().insert(arrayList)
             return result
         }catch (e: Exception){
             Log.e("error",e.printStackTrace().toString())
@@ -35,7 +33,7 @@ class APIGenreAsyncTask : AsyncTask<Any, Any, Array<Genre>>() {
         return null
     }
 
-    fun readStream(inputStream: InputStream) : String {
+    private fun readStream(inputStream: InputStream) : String {
         val br = BufferedReader(InputStreamReader(inputStream))
         val total = StringBuilder()
         while (true) {

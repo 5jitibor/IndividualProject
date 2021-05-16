@@ -7,3 +7,5 @@ const val USER = "admin"
 const val PASSWORD = "admin"
 
 const val APIPOSTER = "2593c0c6"
+
+const val PORT = 8888

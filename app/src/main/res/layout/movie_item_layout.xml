@@ -6,11 +6,11 @@
     android:padding="5dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cv"
+        android:id="@+id/cvMovie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:focusable="false"
+        android:focusable="true"
         android:focusableInTouchMode="false">
 
         <RelativeLayout
@@ -20,20 +20,21 @@
 
             <ImageView
                 android:id="@+id/movie_photo"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_height="100dp"
                 android:layout_width="100dp"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/icon"/>
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/icon"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
-                android:layout_toLeftOf="@id/like_button_movie"
+                android:layout_toStartOf="@id/like_button_movie"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/movie_photo"
+                android:layout_toEndOf="@+id/movie_photo"
                 android:textSize="25sp" />
 
             <RatingBar
@@ -53,9 +54,9 @@
                 android:id="@+id/like_button_movie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/stars"
+
                 android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 app:icon_size="12dp"
                 app:icon_type="heart" />
 

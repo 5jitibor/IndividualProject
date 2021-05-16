@@ -6,7 +6,7 @@ android:layout_height="wrap_content"
 android:padding="5dp">
 
 <androidx.cardview.widget.CardView
-    android:id="@+id/cv"
+    android:id="@+id/cvActor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -22,7 +22,6 @@ android:padding="5dp">
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/movie_photo"
             android:textSize="25sp" />
 
         <com.like.LikeButton
@@ -30,8 +29,8 @@ android:padding="5dp">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            app:icon_size="25dp"
+            android:layout_alignParentEnd="true"
+            app:icon_size="12dp"
             app:icon_type="heart" />
 
 

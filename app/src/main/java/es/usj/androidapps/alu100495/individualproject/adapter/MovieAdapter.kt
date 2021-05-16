@@ -10,25 +10,29 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.activity.ViewMovie
+import es.usj.androidapps.alu100495.individualproject.activity.homeContext
 import es.usj.androidapps.alu100495.individualproject.api.APIPosterAsyncTask
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonMovies
-import kotlinx.android.synthetic.main.actor_item_layout.view.*
-import kotlinx.android.synthetic.main.genre_item_layout.view.*
 import kotlinx.android.synthetic.main.movie_item_layout.view.*
-import kotlinx.android.synthetic.main.movie_item_layout.view.cv
+import kotlinx.android.synthetic.main.movie_item_layout.view.cvMovie
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>(),Filterable {
+class MovieAdapter(list:ArrayList<Movie>) : RecyclerView.Adapter<MovieAdapter.MovieHolder>(),Filterable {
     var movieList: ArrayList<Movie> = arrayListOf()
 
     init {
-        movieList.addAll(SingletonMovies.list)
+        movieList.addAll(list)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -43,19 +47,28 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>(),Filterable
     override fun getItemCount(): Int = movieList.size
 
 
-    class MovieHolder(val view: View): RecyclerView.ViewHolder(view){
+    class MovieHolder(private val view: View): RecyclerView.ViewHolder(view){
         fun render(movie: Movie){
             view.tvTitle.text = movie.title
             view.stars.rating = movie.rating/2
             showImage(movie, view)
-            view.cv.setOnClickListener{
+            view.like_button_movie.isLiked = movie.like
+            view.like_button_movie.setOnClickListener{
+                view.like_button_movie.isLiked = !view.like_button_movie.isLiked
+                movie.like = view.like_button_movie.isLiked
+                homeContext.lifecycleScope.launch {
+                    SingletonDatabase.db.room.MovieDao().update(movie)
+                }
+
+            }
+            view.cvMovie.setOnClickListener{
                 val intent = Intent(view.context, ViewMovie::class.java)
                 intent.putExtra("movie", movie)
                 startActivity(view.context, intent, null)
             }
         }
 
-        fun showImage(movie: Movie, view: View){
+        private fun showImage(movie: Movie, view: View){
             view.movie_photo.setImageResource(R.drawable.icon)
             val cw = ContextWrapper(view.context)
             val directory =  cw.getDir("images", Context.MODE_PRIVATE)
@@ -68,21 +81,14 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>(),Filterable
             else{
                 APIPosterAsyncTask(view, movie).execute()
             }
-            view.like_button_movie.isLiked = movie.like
-            view.like_button_movie.setOnClickListener{
-                view.like_button_movie.isLiked = !view.like_button_movie.isLiked
-                movie.like = view.like_button_movie.isLiked
 
-
-            }
 
         }
     }
 
 
     override fun getFilter(): Filter {
-        val filter  = FilterAdapterMovie()
-        return filter
+        return FilterAdapterMovie()
     }
 
 
@@ -91,8 +97,8 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>(),Filterable
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             var listFiltered: ArrayList<Movie> = arrayListOf()
 
-            if(!constraint.toString().isEmpty()){
-               listFiltered = SingletonMovies.list.filter { it.title.toLowerCase().startsWith(constraint.toString().toLowerCase()) } as ArrayList<Movie>
+            if(constraint.toString().isNotEmpty()){
+               listFiltered = SingletonMovies.list.filter { it.title.toLowerCase(Locale.ROOT).startsWith(constraint.toString().toLowerCase(Locale.ROOT)) } as ArrayList<Movie>
             }
             else{
                 listFiltered.addAll(SingletonMovies.list)

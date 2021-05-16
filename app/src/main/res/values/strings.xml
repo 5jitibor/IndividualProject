@@ -4,4 +4,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="contact">contact</string>
+    <string name="rating">Rating</string>
+    <string name="todo">TODO</string>
+    <string name="textview">TextView</string>
+    <string name="description">Description</string>
+    <string name="image_movie">Image Movie</string>
+
+    <string name="genres">Genres</string>
+    <string name="actors">Actors</string>
 </resources>

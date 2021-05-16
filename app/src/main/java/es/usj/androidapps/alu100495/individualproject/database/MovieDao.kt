@@ -1,6 +1,5 @@
 package es.usj.androidapps.alu100495.individualproject.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
 
@@ -8,18 +7,21 @@ import es.usj.androidapps.alu100495.individualproject.classData.Movie
 interface MovieDao {
 
     @Query("SELECT * FROM $TABLE_MOVIES")
-    fun getAllMovies(): LiveData<List<Movie>>
+    suspend fun getAll(): Array<Movie>
 
     @Query("SELECT * FROM $TABLE_MOVIES WHERE id = :id ")
-    fun getByIdActors(id:Int): Movie
+    suspend fun getById(id: Int): Movie
 
     @Update
-    fun update(movie: Movie)
+    suspend fun update(movie: Movie)
 
-    @Insert
-    fun insert(movie: ArrayList<Movie>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(movie: Array<Movie>)
 
     @Delete
-    fun delete(movie: Movie)
+    suspend fun delete(movie: Movie)
+
+    @Query("SELECT COUNT(*) FROM $TABLE_MOVIES")
+    fun count(): Int
 
 }

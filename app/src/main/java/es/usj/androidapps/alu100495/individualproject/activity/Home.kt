@@ -1,6 +1,5 @@
 package es.usj.androidapps.alu100495.individualproject.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -17,14 +16,17 @@ import es.usj.androidapps.alu100495.individualproject.fragments.ActorsFragment
 import es.usj.androidapps.alu100495.individualproject.fragments.GenresFragment
 import es.usj.androidapps.alu100495.individualproject.fragments.MoviesFragment
 import es.usj.androidapps.alu100495.individualproject.fragments.ViewPagerAdapter
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonGenres
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonMovies
 import kotlinx.android.synthetic.main.activity_home.*
 
-lateinit var homeContext : Context
+lateinit var homeContext : Home
 
 class Home : AppCompatActivity() {
-    var adapterM = MovieAdapter()
-    var adapterA = ActorAdapter()
-    var adapterG = GenreAdapter()
+    var adapterM = MovieAdapter(SingletonMovies.list)
+    var adapterA = ActorAdapter(SingletonActors.list)
+    var adapterG = GenreAdapter(SingletonGenres.list)
     val adapter = ViewPagerAdapter(supportFragmentManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +71,7 @@ class Home : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 if (tab.position ==0) {
                     adapterM.filter.filter(searchView.query.toString())
-                } else if (tab.getPosition()==1) {
+                } else if (tab.position ==1) {
                     adapterA.filter.filter(searchView.query.toString())
                 } else {
                     adapterG.filter.filter(searchView.query.toString())

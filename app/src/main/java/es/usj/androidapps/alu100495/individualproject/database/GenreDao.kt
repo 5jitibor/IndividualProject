@@ -7,18 +7,18 @@ import es.usj.androidapps.alu100495.individualproject.classData.Genre
 @Dao
 interface GenreDao {
     @Query("SELECT * FROM $TABLE_GENRES")
-    fun getAllGenres(): LiveData<List<Genre>>
+    suspend fun getAll(): Array<Genre>
 
     @Query("SELECT * FROM $TABLE_GENRES WHERE id = :id ")
-    fun getByIdGenres(id:Int): Genre
+    suspend fun getById(id:Int): Genre
 
     @Update
-    fun update(actor: Genre)
+    suspend fun update(actor: Genre)
 
-    @Insert
-    fun insert(actor: ArrayList<Genre>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(actor: Array<Genre>)
 
     @Delete
-    fun delete(actor: Genre)
+    suspend fun delete(actor: Genre)
 
 }
