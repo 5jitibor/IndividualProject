@@ -31,11 +31,13 @@ class SelectOptionAsyncTask(private val context: Splash): AsyncTask<Any, Any, Bo
         } catch (e: java.lang.Exception) {
             loadData()
             e.printStackTrace()
+            return false
         }
         finally {
            return true
         }
     }
+
 
     fun loadData(){
         var dataMovies : Array<Movie>

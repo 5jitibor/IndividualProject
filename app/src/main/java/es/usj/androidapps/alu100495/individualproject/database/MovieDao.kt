@@ -18,10 +18,16 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movie: Array<Movie>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(movie: Movie)
+
     @Delete
     suspend fun delete(movie: Movie)
 
     @Query("SELECT COUNT(*) FROM $TABLE_MOVIES")
     fun count(): Int
+
+    @Query("SELECT MAX (id) FROM $TABLE_MOVIES ")
+    suspend fun getMax(): Int
 
 }

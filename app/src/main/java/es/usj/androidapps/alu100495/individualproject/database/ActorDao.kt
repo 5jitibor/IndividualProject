@@ -22,7 +22,8 @@ interface ActorDao {
     @Delete
     suspend fun delete(actor:Actor)
 
-
+    @Query("SELECT MAX (id) FROM $TABLE_ACTORS ")
+    fun getMax(): Int
 
 
 

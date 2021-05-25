@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.usj.androidapps.alu100495.individualproject.R
-import es.usj.androidapps.alu100495.individualproject.adapter.ActorAdapter
+import es.usj.androidapps.alu100495.individualproject.activity.*
+import es.usj.androidapps.alu100495.individualproject.classData.Actor
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
 import kotlinx.android.synthetic.main.fragment_actors.*
 
 
-class ActorsFragment(private var adapter: ActorAdapter) : Fragment() {
+class ActorsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,9 +28,30 @@ class ActorsFragment(private var adapter: ActorAdapter) : Fragment() {
         initRecycler()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        var list : ArrayList<Actor> = arrayListOf()
+        list.addAll(SingletonActors.list)
+        adapterA.actorList= list
+        if(searchView != null) {
+            adapterA.filter.filter(searchView!!.query)
+        }
+        adapterA.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if(searchView != null) {
+            adapterA.filter.filter(searchView!!.query)
+            adapterA.notifyDataSetChanged()
+        }
+
+    }
 
     private fun initRecycler(){
-        rvActors.layoutManager = LinearLayoutManager(context)
-        rvActors.adapter = adapter
+        rvGenresEdit.layoutManager = LinearLayoutManager(context)
+        rvGenresEdit.adapter = adapterA
     }
 }

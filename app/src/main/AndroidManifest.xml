@@ -14,6 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IndividualProject"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.FilterMovies"></activity>
+        <activity android:name=".activity.SelectActors" />
+        <activity android:name=".activity.SelectGenres" />
+        <activity android:name=".activity.EditMovie" />
         <activity android:name=".activity.ViewGenre" />
         <activity android:name=".activity.ViewActor" />
         <activity android:name=".activity.ViewMovie" />

@@ -6,7 +6,7 @@
     tools:context=".fragments.ActorsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvActors"
+        android:id="@+id/rvGenresEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </FrameLayout>

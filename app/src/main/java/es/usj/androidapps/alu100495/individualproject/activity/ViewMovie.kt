@@ -1,10 +1,17 @@
 package es.usj.androidapps.alu100495.individualproject.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.adapter.ActorAdapter
@@ -13,21 +20,41 @@ import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.classData.Genre
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonGenres
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonMovies
 import kotlinx.android.synthetic.main.activity_view_movie.*
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 
 class ViewMovie : AppCompatActivity() {
+
+    lateinit var movie:Movie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_movie)
 
-        val movie : Movie = intent.getSerializableExtra("movie") as Movie
-        tvtitle.text = movie.title
-
+        movie  = intent.getSerializableExtra("movie") as Movie
+        generateRecyclerViews(movie)
+        loadData()
         obtainImage(movie)
 
+
+        like_button_view_movie.isLiked = movie.like
+        like_button_view_movie.setOnClickListener {
+            like_button_view_movie.isLiked = !like_button_view_movie.isLiked
+            movie.like = like_button_view_movie.isLiked
+            changeLikeMovie(movie)
+            lifecycleScope.launch {
+                SingletonDatabase.db.room.MovieDao().update(movie)
+            }
+        }
+
+    }
+
+    fun loadData(){
+        tvtitle.text = movie.title
         tvTime.text=calculateTime(movie.runtime)
         tvDirector.text = "Director: " + movie.director
 
@@ -35,12 +62,39 @@ class ViewMovie : AppCompatActivity() {
 
         tvRenevue.text = "Revenue: "+movie.revenue.toString() +"$"
 
-        generateRecyclerViews(movie)
-
         tvVotes.text = "Votes: "+ movie.votes
         tvNumberRating.text = "Punctuation:"+movie.rating.toString()
         ratingBarMovie.rating = movie.rating/2
 
+        rvMovieGenres.adapter = GenreAdapter(obtainGenres(movie))
+        rvMovieActors.adapter = ActorAdapter(obtainActors(movie))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bar_menu_view, menu)
+
+        return super.onCreateOptionsMenu(menu)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_edit -> {
+                val intent = Intent(this, EditMovie::class.java)
+                intent.putExtra("movie",movie)
+                intent.putExtra("code", CODEEDITMOVIE)
+                startActivityForResult(intent,0)
+            }
+            R.id.action_remove -> {
+                SingletonMovies.list.remove(movie)
+                lifecycleScope.launch {
+                    SingletonDatabase.db.room.MovieDao().delete(movie)
+                }
+                finish()
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun calculateTime(time:Int):String{
@@ -81,6 +135,18 @@ class ViewMovie : AppCompatActivity() {
         return list
     }
 
+    private fun changeMovie() {
+        var i = 0
+        for(movieSearch in SingletonMovies.list){
+            if(movieSearch.id == movie.id){
+                SingletonMovies.list.remove(movieSearch )
+                SingletonMovies.list.add(i,movie)
+                return
+            }
+            i++
+        }
+    }
+
     private fun obtainImage(movie:Movie){
         val cw = ContextWrapper(this)
         val directory =  cw.getDir("images", Context.MODE_PRIVATE)
@@ -96,10 +162,34 @@ class ViewMovie : AppCompatActivity() {
         val linealGenre = LinearLayoutManager(this)
         linealGenre.orientation = LinearLayoutManager.HORIZONTAL
         rvMovieGenres.layoutManager = linealGenre
-        rvMovieGenres.adapter = GenreAdapter(obtainGenres(movie))
+
         val linealMovie = LinearLayoutManager(this)
         linealMovie.orientation = LinearLayoutManager.HORIZONTAL
         rvMovieActors.layoutManager = linealMovie
-        rvMovieActors.adapter = ActorAdapter(obtainActors(movie))
+
+    }
+
+    private fun changeLikeMovie(movie:Movie){
+        for(movieCompare in SingletonMovies.list){
+            if(movieCompare.id==movie.id){
+                movieCompare.like=movie.like
+                return
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            var movieAux = data?.extras?.get("movie") as Movie
+            movieAux.id = movie.id
+            movie = movieAux
+            lifecycleScope.launch {
+                SingletonDatabase.db.room.MovieDao().update(movie)
+            }
+            changeMovie()
+            loadData()
+
+        }
     }
 }

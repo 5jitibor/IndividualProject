@@ -1,62 +1,67 @@
 package es.usj.androidapps.alu100495.individualproject.adapter
 
-import android.content.Intent
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import es.usj.androidapps.alu100495.individualproject.R
-import es.usj.androidapps.alu100495.individualproject.activity.ViewGenre
-import es.usj.androidapps.alu100495.individualproject.activity.homeContext
+import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.classData.Genre
-import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonGenres
-import kotlinx.android.synthetic.main.actor_genre_item_layout.view.*
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.actor_item_select_layout.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
-
-class GenreAdapter(list:ArrayList<Genre>): RecyclerView.Adapter<GenreAdapter.GenreHolder>(),Filterable {
-    var genreList: ArrayList<Genre> = arrayListOf()
+class GenreAdapterSelect(genreListSelect: ArrayList<Genre> ): RecyclerView.Adapter<GenreAdapterSelect.ActorHolder>(),Filterable {
+    var genreList: ArrayList<Genre>
+    var genreListSelected: ArrayList<Genre>
     init {
-        genreList.addAll(list)
+        genreList = arrayListOf()
+        this.genreListSelected = arrayListOf()
+        genreList.addAll(SingletonGenres.list)
+        this.genreListSelected.addAll(genreListSelect)
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return GenreHolder(layoutInflater.inflate(R.layout.actor_genre_item_layout,parent,false))
+        return ActorHolder(layoutInflater.inflate(R.layout.actor_item_select_layout,parent,false))
     }
 
-    override fun onBindViewHolder(holder: GenreHolder, position: Int) {
+    override fun onBindViewHolder(holder: ActorHolder, position: Int) {
         holder.render(genreList[position])
     }
 
     override fun getItemCount(): Int = genreList.size
 
 
-    class GenreHolder(private val view: View): RecyclerView.ViewHolder(view){
+   inner class ActorHolder(private val view:View):RecyclerView.ViewHolder(view){
         fun render(genre: Genre){
             view.tvName.text = genre.name
-            view.like_button_actor_genre.isLiked = genre.like
-            view.like_button_actor_genre.setOnClickListener{
-                view.like_button_actor_genre.isLiked = !view.like_button_actor_genre.isLiked
-                genre.like = view.like_button_actor_genre.isLiked
-                homeContext.lifecycleScope.launch {
-                    SingletonDatabase.db.room.GenreDao().update(genre)
+            view.select_button_actor.isSelected = true
+            view.select_button_actor.isChecked= checkGenre(genre)
+            view.select_button_actor.setOnClickListener {
+                if(checkGenre(genre)){
+                    genreListSelected.remove(genre)
                 }
-
-            }
-            view.cvActorGenre.setOnClickListener{
-                val intent = Intent(view.context, ViewGenre::class.java)
-                intent.putExtra("genre", genre)
-                ContextCompat.startActivity(view.context, intent, null)
+                else{
+                    genreListSelected.add(genre)
+                }
             }
 
         }
+
+
+    }
+
+    fun checkGenre(genre:Genre): Boolean{
+        for(genreAux in genreListSelected){
+            if(genre.id == genreAux.id){
+                return true
+            }
+        }
+        return false
     }
 
     override fun getFilter(): Filter {
@@ -86,4 +91,7 @@ class GenreAdapter(list:ArrayList<Genre>): RecyclerView.Adapter<GenreAdapter.Gen
         }
 
     }
+
+
+
 }

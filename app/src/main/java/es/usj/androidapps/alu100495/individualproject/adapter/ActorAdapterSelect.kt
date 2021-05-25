@@ -1,34 +1,30 @@
 package es.usj.androidapps.alu100495.individualproject.adapter
 
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import es.usj.androidapps.alu100495.individualproject.R
-import es.usj.androidapps.alu100495.individualproject.activity.ViewActor
-import es.usj.androidapps.alu100495.individualproject.activity.homeContext
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
-import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
-import kotlinx.android.synthetic.main.actor_genre_item_layout.view.*
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.actor_item_select_layout.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
-class ActorAdapter(list:ArrayList<Actor>): RecyclerView.Adapter<ActorAdapter.ActorHolder>(),Filterable {
-    var actorList: ArrayList<Actor> = arrayListOf()
+class ActorAdapterSelect(actorListSelect: ArrayList<Actor> ): RecyclerView.Adapter<ActorAdapterSelect.ActorHolder>(),Filterable {
+    var actorList: ArrayList<Actor>
+    var actorListSelected: ArrayList<Actor>
     init {
-        actorList.addAll(list)
+        actorList = arrayListOf()
+        this.actorListSelected = arrayListOf()
+        actorList.addAll(SingletonActors.list)
+        this.actorListSelected.addAll(actorListSelect)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return ActorHolder(layoutInflater.inflate(R.layout.actor_genre_item_layout,parent,false))
+        return ActorHolder(layoutInflater.inflate(R.layout.actor_item_select_layout,parent,false))
     }
 
     override fun onBindViewHolder(holder: ActorHolder, position: Int) {
@@ -38,25 +34,32 @@ class ActorAdapter(list:ArrayList<Actor>): RecyclerView.Adapter<ActorAdapter.Act
     override fun getItemCount(): Int = actorList.size
 
 
-    class ActorHolder(private val view:View):RecyclerView.ViewHolder(view){
+   inner class ActorHolder(private val view:View):RecyclerView.ViewHolder(view){
         fun render(actor: Actor){
             view.tvName.text = actor.name
-            view.like_button_actor_genre.isLiked = actor.like
-            view.like_button_actor_genre.setOnClickListener{
-                view.like_button_actor_genre.isLiked = !view.like_button_actor_genre.isLiked
-                actor.like = view.like_button_actor_genre.isLiked
-                homeContext.lifecycleScope.launch {
-                    SingletonDatabase.db.room.ActorDao().update(actor)
+            view.select_button_actor.isSelected = true
+            view.select_button_actor.isChecked= checkActor(actor)
+            view.select_button_actor.setOnClickListener {
+                if(checkActor(actor)){
+                    actorListSelected.remove(actor)
+                }
+                else{
+                    actorListSelected.add(actor)
                 }
             }
-            view.cvActorGenre.setOnClickListener{
-                val intent = Intent(view.context, ViewActor::class.java)
-                intent.putExtra("actor", actor)
-                ContextCompat.startActivity(view.context, intent, null)
-            }
-
 
         }
+
+
+    }
+
+    fun checkActor(actor:Actor): Boolean{
+        for(actorAux in actorListSelected){
+            if(actor.id == actorAux.id){
+                return true
+            }
+        }
+        return false
     }
 
     override fun getFilter(): Filter {
@@ -86,6 +89,7 @@ class ActorAdapter(list:ArrayList<Actor>): RecyclerView.Adapter<ActorAdapter.Act
         }
 
     }
+
 
 
 }

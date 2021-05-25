@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".activity.Home">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnNewMovie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:translationX="-20dp"
+        android:translationY="-20dp"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -28,7 +39,9 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appBarLayout" />
+        android:layout_below="@id/appBarLayout" >
+
+    </androidx.viewpager.widget.ViewPager>
 
 
 </RelativeLayout>

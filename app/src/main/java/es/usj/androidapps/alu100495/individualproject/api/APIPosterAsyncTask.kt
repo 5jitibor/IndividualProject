@@ -22,7 +22,7 @@ class APIPosterAsyncTask(private var view: View, var movie: Movie) : AsyncTask<A
 
 
     override fun doInBackground(vararg params: Any?): String? {
-        val title : String = (view.tvTitle.text as String)
+        val title : String = movie.title
         val titleProcessed = title.replace(' ', '+')
         val url = URL("http://www.omdbapi.com/?t=$titleProcessed&apikey=$APIPOSTER")
         val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection

@@ -18,6 +18,7 @@ import es.usj.androidapps.alu100495.individualproject.activity.homeContext
 import es.usj.androidapps.alu100495.individualproject.api.APIPosterAsyncTask
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonFilterMovies
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonMovies
 import kotlinx.android.synthetic.main.movie_item_layout.view.*
 import kotlinx.android.synthetic.main.movie_item_layout.view.cvMovie
@@ -56,6 +57,7 @@ class MovieAdapter(list:ArrayList<Movie>) : RecyclerView.Adapter<MovieAdapter.Mo
             view.like_button_movie.setOnClickListener{
                 view.like_button_movie.isLiked = !view.like_button_movie.isLiked
                 movie.like = view.like_button_movie.isLiked
+                homeContext.fragmentM.onResume()
                 homeContext.lifecycleScope.launch {
                     SingletonDatabase.db.room.MovieDao().update(movie)
                 }
@@ -98,10 +100,11 @@ class MovieAdapter(list:ArrayList<Movie>) : RecyclerView.Adapter<MovieAdapter.Mo
             var listFiltered: ArrayList<Movie> = arrayListOf()
 
             if(constraint.toString().isNotEmpty()){
-               listFiltered = SingletonMovies.list.filter { it.title.toLowerCase(Locale.ROOT).startsWith(constraint.toString().toLowerCase(Locale.ROOT)) } as ArrayList<Movie>
+
+                listFiltered = SingletonFilterMovies.filterMovies(SingletonMovies.list).filter { it.title.toLowerCase(Locale.ROOT).startsWith(constraint.toString().toLowerCase(Locale.ROOT)) } as ArrayList<Movie>
             }
             else{
-                listFiltered.addAll(SingletonMovies.list)
+                listFiltered.addAll(SingletonFilterMovies.filterMovies(SingletonMovies.list))
             }
             val filterResult  = FilterResults()
             filterResult.values = listFiltered

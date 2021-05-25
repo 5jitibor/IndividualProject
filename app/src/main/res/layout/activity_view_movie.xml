@@ -162,7 +162,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
                 android:isIndicator="true"
-                style="@style/RatingBar"
+                android:theme="@style/RatingBar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvNameRating" />
 
