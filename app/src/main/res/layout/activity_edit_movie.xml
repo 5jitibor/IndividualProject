@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".activity.ViewMovie">
 
 
+    <TextView
+        android:id="@+id/tvType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="24sp" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -57,11 +63,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="72dp"
+                android:layout_marginTop="16dp"
                 android:text="Length:"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvNameRevenue" />
+                app:layout_constraintTop_toBottomOf="@+id/tvNameYear" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvActorsEdit"
@@ -90,9 +96,9 @@
                 android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="number"
+                android:theme="@style/EditText"
                 app:layout_constraintStart_toEndOf="@+id/tvNameYear"
-                app:layout_constraintTop_toBottomOf="@+id/etRevenue"
-                android:theme="@style/EditText"/>
+                app:layout_constraintTop_toBottomOf="@+id/etRevenue" />
 
             <TextView
                 android:id="@+id/tvVote"
@@ -107,14 +113,13 @@
 
             <EditText
                 android:id="@+id/etLength"
-                android:layout_width="216dp"
-                android:layout_height="51dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:ems="10"
                 android:inputType="number"
                 android:theme="@style/EditText"
-                app:layout_constraintStart_toEndOf="@+id/tvVote"
+                app:layout_constraintStart_toEndOf="@+id/tvLength"
                 app:layout_constraintTop_toBottomOf="@+id/etYear" />
 
             <EditText
@@ -136,18 +141,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="96dp"
+                android:layout_marginTop="16dp"
                 android:text="Description:"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvNameYear" />
+                app:layout_constraintTop_toBottomOf="@+id/tvLength" />
 
             <TextView
                 android:id="@+id/tvNameRevenue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:text="Revenue:"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -168,7 +173,6 @@
                 android:id="@+id/etTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -181,34 +185,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:text="Director:"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvNameTitle"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/tvNameTitle" />
 
             <EditText
                 android:id="@+id/etDirector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                app:layout_constraintStart_toEndOf="@+id/tvNameDirector"
-                app:layout_constraintTop_toBottomOf="@+id/etTitle"
                 android:theme="@style/EditText"
-                />
+                app:layout_constraintStart_toEndOf="@+id/tvNameDirector"
+                app:layout_constraintTop_toBottomOf="@+id/etTitle" />
 
             <EditText
                 android:id="@+id/etRevenue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="12dp"
                 android:ems="10"
-                android:theme="@style/EditText"
                 android:inputType="numberSigned|numberDecimal"
+                android:theme="@style/EditText"
                 app:layout_constraintStart_toEndOf="@+id/tvNameRevenue"
                 app:layout_constraintTop_toBottomOf="@+id/etDirector" />
 
@@ -241,8 +242,20 @@
                 android:layout_marginStart="240dp"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="#FF0000"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvGenres"
                 app:layout_constraintTop_toBottomOf="@+id/etDescripcion"
+                app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+            <ImageButton
+                android:id="@+id/btnYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#FF0000"
+                app:layout_constraintStart_toEndOf="@+id/etYear"
+                app:layout_constraintTop_toBottomOf="@+id/etRevenue"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
 
             <ImageButton
@@ -252,6 +265,7 @@
                 android:layout_marginStart="244dp"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="#FF0000"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvActors"
                 app:layout_constraintTop_toBottomOf="@+id/rvGenresEdit"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
@@ -270,4 +284,4 @@
     </ScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

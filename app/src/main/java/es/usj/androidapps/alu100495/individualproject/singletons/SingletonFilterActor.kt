@@ -7,7 +7,7 @@ object SingletonFilterActor {
     var like = false
 
 
-    fun filterMovies(actorList: ArrayList<Actor>): ArrayList<Actor>{
+    fun filterActor(actorList: ArrayList<Actor>): ArrayList<Actor>{
         var list = actorList
         var aux: ArrayList<Actor> = arrayListOf()
         if(like){
@@ -17,7 +17,8 @@ object SingletonFilterActor {
                     aux.add(actor)
                 }
             }
-            list=aux
+            list.clear()
+            list.addAll(aux)
         }
         aux.clear()
         return list

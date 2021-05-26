@@ -47,7 +47,6 @@ class MovieAdapter(list:ArrayList<Movie>) : RecyclerView.Adapter<MovieAdapter.Mo
 
     override fun getItemCount(): Int = movieList.size
 
-
     class MovieHolder(private val view: View): RecyclerView.ViewHolder(view){
         fun render(movie: Movie){
             view.tvTitle.text = movie.title

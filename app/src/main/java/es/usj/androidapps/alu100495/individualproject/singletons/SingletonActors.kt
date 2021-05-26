@@ -9,7 +9,11 @@ object SingletonActors{
     val list: ArrayList<Actor> = arrayListOf()
 
 
-    fun fillWithContentFromAPI(dataActors: Array<Actor>){
-        list.addAll(dataActors)
+    fun fillWithContentFromDatabase(){
+        list.addAll(SingletonDatabase.db.room.ActorDao().getAllNoSuspend())
+    }
+
+    suspend fun fillWithContentFromDatabaseCoroutine(){
+        list.addAll(SingletonDatabase.db.room.ActorDao().getAll())
     }
 }

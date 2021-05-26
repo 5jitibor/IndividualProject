@@ -8,7 +8,11 @@ object SingletonGenres {
     val list: ArrayList<Genre> = arrayListOf()
 
 
-    fun fillWithContentFromAPI(dataActors: Array<Genre>){
-        list.addAll(dataActors)
+    fun fillWithContentFromDatabase(){
+       list.addAll(SingletonDatabase.db.room.GenreDao().getAllNoSuspend())
+    }
+
+    suspend fun fillWithContentFromDatabaseCoroutine(){
+        list.addAll(SingletonDatabase.db.room.GenreDao().getAll())
     }
 }

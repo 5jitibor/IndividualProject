@@ -13,8 +13,11 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:clickable="true"
+        android:foreground="@drawable/ic_baseline_add_24"
+        android:foregroundTint="#FFFFFF"
         android:translationX="-20dp"
         android:translationY="-20dp"
+        app:backgroundTint="#FF0000"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <com.google.android.material.appbar.AppBarLayout
@@ -27,9 +30,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            app:tabIndicatorColor="@color/white"
-
             app:tabGravity="fill"
+
+            app:tabIndicatorColor="@color/white"
             app:tabInlineLabel="true"
             app:tabMode="fixed"
             app:tabTextColor="@android:color/white" />
@@ -39,7 +42,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appBarLayout" >
+        android:layout_below="@id/appBarLayout">
 
     </androidx.viewpager.widget.ViewPager>
 

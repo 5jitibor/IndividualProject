@@ -7,7 +7,7 @@ object SingletonFilterGenres {
     var like = false
 
 
-    fun filterMovies(genreList: ArrayList<Genre>): ArrayList<Genre>{
+    fun filterGenres(genreList: ArrayList<Genre>): ArrayList<Genre>{
         var list = genreList
         var aux: ArrayList<Genre> = arrayListOf()
         if(like){
@@ -17,7 +17,8 @@ object SingletonFilterGenres {
                     aux.add(genre)
                 }
             }
-            list=aux
+            list.clear()
+            list.addAll(aux)
         }
         aux.clear()
         return list

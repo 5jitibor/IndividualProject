@@ -13,6 +13,7 @@ import es.usj.androidapps.alu100495.individualproject.activity.searchView
 import es.usj.androidapps.alu100495.individualproject.adapter.GenreAdapter
 import es.usj.androidapps.alu100495.individualproject.classData.Genre
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonFilterGenres
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonGenres
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonMovies
 import kotlinx.android.synthetic.main.fragment_genres.*
@@ -36,8 +37,8 @@ class GenresFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        var list : ArrayList<Genre> = arrayListOf()
-        list.addAll(SingletonGenres.list)
+        val list : ArrayList<Genre> = arrayListOf()
+        list.addAll(SingletonFilterGenres.filterGenres(SingletonGenres.list))
         adapterG.genreList= list
         if(searchView != null) {
             adapterG.filter.filter(searchView!!.query)

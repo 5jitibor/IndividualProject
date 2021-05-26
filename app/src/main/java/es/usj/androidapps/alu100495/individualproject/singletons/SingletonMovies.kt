@@ -8,7 +8,11 @@ object SingletonMovies {
     val list: ArrayList<Movie> = arrayListOf()
 
 
-    fun fillWithContentFromAPI(dataActors: Array<Movie>){
-        list.addAll(dataActors)
+    fun fillWithContentFromDatabase(){
+        list.addAll(SingletonDatabase.db.room.MovieDao().getAllNoSuspend())
+    }
+
+    suspend fun fillWithContentFromDatabaseCoroutine(){
+        list.addAll(SingletonDatabase.db.room.MovieDao().getAll())
     }
 }

@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.adapter.ActorAdapterSelect
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
-import kotlinx.android.synthetic.main.activity_select_actors.*
+import kotlinx.android.synthetic.main.activity_select.*
 
 class SelectActors : AppCompatActivity() {
     lateinit var adapter : ActorAdapterSelect
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_select_actors)
+        setContentView(R.layout.activity_select)
         val list= intent.getSerializableExtra("actor") as ArrayList<Actor>
         adapter =ActorAdapterSelect(list)
         rvSelect.layoutManager = LinearLayoutManager(this)

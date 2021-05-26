@@ -26,40 +26,34 @@ class SelectOptionAsyncTask(private val context: Splash): AsyncTask<Any, Any, Bo
             val sock = Socket()
             val timeoutMs = 2000 // 2 seconds
             sock.connect(socket, timeoutMs)
-            APIControlAsyncTask(context).execute()
+
 
         } catch (e: java.lang.Exception) {
             loadData()
             e.printStackTrace()
             return false
         }
-        finally {
            return true
-        }
+
     }
 
 
     fun loadData(){
-        var dataMovies : Array<Movie>
-        var dataGenres : Array<Genre>
-        var dataActors : Array<Actor>
+
         var coroutineFinished = 0
 
         context.lifecycleScope.launch {
-            dataGenres = SingletonDatabase.db.room.GenreDao().getAll()
-            SingletonGenres.fillWithContentFromAPI(dataGenres)
+            SingletonGenres.fillWithContentFromDatabaseCoroutine()
             coroutineFinished++
         }
 
         context.lifecycleScope.launch {
-            dataMovies =SingletonDatabase.db.room.MovieDao().getAll()
-            SingletonMovies.fillWithContentFromAPI(dataMovies)
+            SingletonMovies.fillWithContentFromDatabaseCoroutine()
             coroutineFinished++
         }
 
         context.lifecycleScope.launch {
-            dataActors = SingletonDatabase.db.room.ActorDao().getAll()
-            SingletonActors.fillWithContentFromAPI(dataActors)
+            SingletonActors.fillWithContentFromDatabaseCoroutine()
             coroutineFinished++
         }
         while(coroutineFinished!=3){
@@ -69,6 +63,14 @@ class SelectOptionAsyncTask(private val context: Splash): AsyncTask<Any, Any, Bo
         val sendIntent = Intent(context, Home::class.java)
         context.startActivity(sendIntent)
         context.finish()
+    }
+
+    override fun onPostExecute(result: Boolean?) {
+        super.onPostExecute(result)
+        if(result == true){
+            APIControlAsyncTask(context).execute()
+        }
+
     }
 
 }

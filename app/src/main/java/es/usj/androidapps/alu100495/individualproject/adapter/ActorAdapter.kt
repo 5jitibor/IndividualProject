@@ -16,7 +16,8 @@ import es.usj.androidapps.alu100495.individualproject.activity.homeContext
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
-import kotlinx.android.synthetic.main.actor_genre_item_layout.view.*
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonFilterActor
+import kotlinx.android.synthetic.main.item_layout.view.*
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,7 +29,7 @@ class ActorAdapter(list:ArrayList<Actor>): RecyclerView.Adapter<ActorAdapter.Act
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return ActorHolder(layoutInflater.inflate(R.layout.actor_genre_item_layout,parent,false))
+        return ActorHolder(layoutInflater.inflate(R.layout.item_layout,parent,false))
     }
 
     override fun onBindViewHolder(holder: ActorHolder, position: Int) {
@@ -44,6 +45,7 @@ class ActorAdapter(list:ArrayList<Actor>): RecyclerView.Adapter<ActorAdapter.Act
             view.like_button_actor_genre.isLiked = actor.like
             view.like_button_actor_genre.setOnClickListener{
                 view.like_button_actor_genre.isLiked = !view.like_button_actor_genre.isLiked
+                homeContext.fragmentA.onResume()
                 actor.like = view.like_button_actor_genre.isLiked
                 homeContext.lifecycleScope.launch {
                     SingletonDatabase.db.room.ActorDao().update(actor)
@@ -67,10 +69,10 @@ class ActorAdapter(list:ArrayList<Actor>): RecyclerView.Adapter<ActorAdapter.Act
             var listFiltered: ArrayList<Actor> = arrayListOf()
 
             if(constraint.toString().isNotEmpty()){
-                listFiltered = SingletonActors.list.filter { it.name.toLowerCase(Locale.ROOT).startsWith(constraint.toString().toLowerCase(Locale.ROOT)) } as ArrayList<Actor>
+                listFiltered = SingletonFilterActor.filterActor(SingletonActors.list).filter { it.name.toLowerCase(Locale.ROOT).startsWith(constraint.toString().toLowerCase(Locale.ROOT)) } as ArrayList<Actor>
             }
             else{
-                listFiltered.addAll(SingletonActors.list)
+                listFiltered.addAll(SingletonFilterActor.filterActor(SingletonActors.list))
             }
             val filterResult  = FilterResults()
             filterResult.values = listFiltered

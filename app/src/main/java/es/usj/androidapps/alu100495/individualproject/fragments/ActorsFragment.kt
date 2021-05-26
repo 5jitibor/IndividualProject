@@ -10,6 +10,7 @@ import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.activity.*
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonFilterActor
 import kotlinx.android.synthetic.main.fragment_actors.*
 
 
@@ -31,8 +32,8 @@ class ActorsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        var list : ArrayList<Actor> = arrayListOf()
-        list.addAll(SingletonActors.list)
+        val list : ArrayList<Actor> = arrayListOf()
+        list.addAll(SingletonFilterActor.filterActor(SingletonActors.list))
         adapterA.actorList= list
         if(searchView != null) {
             adapterA.filter.filter(searchView!!.query)

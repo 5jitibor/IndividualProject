@@ -1,27 +1,25 @@
 package es.usj.androidapps.alu100495.individualproject.activity
 
 import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.lifecycle.lifecycleScope
 import es.usj.androidapps.alu100495.individualproject.R
-import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
-import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
+import es.usj.androidapps.alu100495.individualproject.singletons.SingletonFilterActor
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonFilterMovies
-import es.usj.androidapps.alu100495.individualproject.singletons.SingletonMovies
+import kotlinx.android.synthetic.main.activity_filter.*
 import kotlinx.android.synthetic.main.activity_filter_movies.*
+import kotlinx.android.synthetic.main.activity_filter_movies.switchLike
+import kotlinx.android.synthetic.main.activity_filter_movies.tvTitleFilter
 import kotlinx.android.synthetic.main.activity_filter_movies.view.*
-import kotlinx.android.synthetic.main.movie_item_layout.view.*
-import kotlinx.coroutines.launch
 
-class FilterMovies : AppCompatActivity() {
+class FilterActor : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_filter_movies)
-        switchLike.isChecked = SingletonFilterMovies.like
+        setContentView(R.layout.activity_filter)
+        switchLikeFilter.isChecked = SingletonFilterActor.like
+        tvTitleFilter.text = "Filter Actor"
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -34,7 +32,7 @@ class FilterMovies : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_finish -> {
-                SingletonFilterMovies.like = switchLike.isChecked
+                SingletonFilterActor.like = switchLikeFilter.isChecked
                 setResult(Activity.RESULT_OK,intent)
                 finish()
             }

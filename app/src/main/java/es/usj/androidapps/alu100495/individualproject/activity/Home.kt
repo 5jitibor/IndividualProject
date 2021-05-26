@@ -14,6 +14,8 @@ import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.adapter.ActorAdapter
 import es.usj.androidapps.alu100495.individualproject.adapter.GenreAdapter
 import es.usj.androidapps.alu100495.individualproject.adapter.MovieAdapter
+import es.usj.androidapps.alu100495.individualproject.api.ADDMOVIE
+import es.usj.androidapps.alu100495.individualproject.api.APIMovieAddAsyncTask
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
 import es.usj.androidapps.alu100495.individualproject.fragments.ActorsFragment
 import es.usj.androidapps.alu100495.individualproject.fragments.GenresFragment
@@ -45,7 +47,7 @@ class Home : AppCompatActivity() {
 
         setUpTabs()
         btnNewMovie.setOnClickListener {
-            var intent = Intent(this, EditMovie::class.java)
+            val intent = Intent(this, EditMovie::class.java)
             intent.putExtra("code", CODENEWMOVIE)
             startActivityForResult(intent,0)
         }
@@ -55,11 +57,12 @@ class Home : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK){
-            var movieAux = data?.extras?.get("movie") as Movie
+            val movieAux = data?.extras?.get("movie") as Movie
             lifecycleScope.launch{
                 movieAux.id = SingletonDatabase.db.room.MovieDao().getMax()+1
                 SingletonMovies.list.add(movieAux)
                 SingletonDatabase.db.room.MovieDao().insert(movieAux)
+                APIMovieAddAsyncTask(movieAux, ADDMOVIE).execute()
             }
 
         }
@@ -106,7 +109,18 @@ class Home : AppCompatActivity() {
                 startActivity(Intent(this, Contact::class.java))
             }
             R.id.action_filter->{
-                startActivity(Intent(this, FilterMovies::class.java))
+
+                when {
+                    adapter.getItem(0).isResumed -> {
+                        startActivity(Intent(this, FilterMovies::class.java))
+                    }
+                    adapter.getItem(1).isResumed -> {
+                        startActivity(Intent(this, FilterActor::class.java))
+                    }
+                    else -> {
+                        startActivity(Intent(this, FilterGenre::class.java))
+                    }
+                }
             }
 
         }

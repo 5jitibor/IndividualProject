@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.classData.Genre
-import kotlinx.android.synthetic.main.actor_item_select_layout.view.*
+import kotlinx.android.synthetic.main.item_select_layout.view.*
 
 class GenreAdapterEditMovie(var genreList: ArrayList<Genre> ): RecyclerView.Adapter<GenreAdapterEditMovie.ActorHolder>(){
 

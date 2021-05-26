@@ -13,9 +13,8 @@ import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.activity.ViewGenre
 import es.usj.androidapps.alu100495.individualproject.activity.homeContext
 import es.usj.androidapps.alu100495.individualproject.classData.Genre
-import es.usj.androidapps.alu100495.individualproject.singletons.SingletonDatabase
-import es.usj.androidapps.alu100495.individualproject.singletons.SingletonGenres
-import kotlinx.android.synthetic.main.actor_genre_item_layout.view.*
+import es.usj.androidapps.alu100495.individualproject.singletons.*
+import kotlinx.android.synthetic.main.item_layout.view.*
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,7 +27,7 @@ class GenreAdapter(list:ArrayList<Genre>): RecyclerView.Adapter<GenreAdapter.Gen
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return GenreHolder(layoutInflater.inflate(R.layout.actor_genre_item_layout,parent,false))
+        return GenreHolder(layoutInflater.inflate(R.layout.item_layout,parent,false))
     }
 
     override fun onBindViewHolder(holder: GenreHolder, position: Int) {
@@ -44,6 +43,7 @@ class GenreAdapter(list:ArrayList<Genre>): RecyclerView.Adapter<GenreAdapter.Gen
             view.like_button_actor_genre.isLiked = genre.like
             view.like_button_actor_genre.setOnClickListener{
                 view.like_button_actor_genre.isLiked = !view.like_button_actor_genre.isLiked
+                homeContext.fragmentG.onResume()
                 genre.like = view.like_button_actor_genre.isLiked
                 homeContext.lifecycleScope.launch {
                     SingletonDatabase.db.room.GenreDao().update(genre)
@@ -67,10 +67,10 @@ class GenreAdapter(list:ArrayList<Genre>): RecyclerView.Adapter<GenreAdapter.Gen
             var listFiltered: ArrayList<Genre> = arrayListOf()
 
             if(constraint.toString().isNotEmpty()){
-                listFiltered = SingletonGenres.list.filter { it.name.toLowerCase(Locale.ROOT).startsWith(constraint.toString().toLowerCase(Locale.ROOT)) } as ArrayList<Genre>
+                listFiltered = SingletonFilterGenres.filterGenres(SingletonGenres.list).filter { it.name.toLowerCase(Locale.ROOT).startsWith(constraint.toString().toLowerCase(Locale.ROOT)) } as ArrayList<Genre>
             }
             else{
-                listFiltered.addAll(SingletonGenres.list)
+                listFiltered.addAll(SingletonFilterGenres.filterGenres(SingletonGenres.list))
             }
             val filterResult  = FilterResults()
             filterResult.values = listFiltered

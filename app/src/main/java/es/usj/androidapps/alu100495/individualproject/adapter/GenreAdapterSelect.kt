@@ -8,11 +8,9 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import es.usj.androidapps.alu100495.individualproject.R
-import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.classData.Genre
-import es.usj.androidapps.alu100495.individualproject.singletons.SingletonActors
 import es.usj.androidapps.alu100495.individualproject.singletons.SingletonGenres
-import kotlinx.android.synthetic.main.actor_item_select_layout.view.*
+import kotlinx.android.synthetic.main.item_select_layout.view.*
 import java.util.*
 
 class GenreAdapterSelect(genreListSelect: ArrayList<Genre> ): RecyclerView.Adapter<GenreAdapterSelect.ActorHolder>(),Filterable {
@@ -26,7 +24,7 @@ class GenreAdapterSelect(genreListSelect: ArrayList<Genre> ): RecyclerView.Adapt
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return ActorHolder(layoutInflater.inflate(R.layout.actor_item_select_layout,parent,false))
+        return ActorHolder(layoutInflater.inflate(R.layout.item_select_layout,parent,false))
     }
 
     override fun onBindViewHolder(holder: ActorHolder, position: Int) {

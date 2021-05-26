@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.adapter.ActorAdapter
 import es.usj.androidapps.alu100495.individualproject.adapter.GenreAdapter
+import es.usj.androidapps.alu100495.individualproject.api.ADDMOVIE
+import es.usj.androidapps.alu100495.individualproject.api.APIMovieAddAsyncTask
+import es.usj.androidapps.alu100495.individualproject.api.REMOVEMOVIE
+import es.usj.androidapps.alu100495.individualproject.api.UPDATEMOVIE
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.classData.Genre
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
@@ -36,7 +40,7 @@ class ViewMovie : AppCompatActivity() {
         setContentView(R.layout.activity_view_movie)
 
         movie  = intent.getSerializableExtra("movie") as Movie
-        generateRecyclerViews(movie)
+        generateRecyclerViews()
         loadData()
         obtainImage(movie)
 
@@ -89,6 +93,7 @@ class ViewMovie : AppCompatActivity() {
                 SingletonMovies.list.remove(movie)
                 lifecycleScope.launch {
                     SingletonDatabase.db.room.MovieDao().delete(movie)
+                    APIMovieAddAsyncTask(movie, REMOVEMOVIE).execute()
                 }
                 finish()
 
@@ -158,7 +163,7 @@ class ViewMovie : AppCompatActivity() {
         }
     }
 
-    private fun generateRecyclerViews(movie:Movie){
+    private fun generateRecyclerViews(){
         val linealGenre = LinearLayoutManager(this)
         linealGenre.orientation = LinearLayoutManager.HORIZONTAL
         rvMovieGenres.layoutManager = linealGenre
@@ -181,11 +186,12 @@ class ViewMovie : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK){
-            var movieAux = data?.extras?.get("movie") as Movie
+            val movieAux = data?.extras?.get("movie") as Movie
             movieAux.id = movie.id
             movie = movieAux
             lifecycleScope.launch {
                 SingletonDatabase.db.room.MovieDao().update(movie)
+                APIMovieAddAsyncTask(movie, UPDATEMOVIE).execute()
             }
             changeMovie()
             loadData()

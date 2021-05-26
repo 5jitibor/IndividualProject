@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.classData.Actor
-import kotlinx.android.synthetic.main.actor_item_select_layout.view.*
+import kotlinx.android.synthetic.main.item_select_layout.view.*
 
 class ActorAdapterEditMovie(var  actorList: ArrayList<Actor> ): RecyclerView.Adapter<ActorAdapterEditMovie.ActorHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {

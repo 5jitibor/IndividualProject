@@ -20,9 +20,7 @@ class APIControlAsyncTask(private val context: Splash): AsyncTask<Any, Any, Bool
     private val movieTask = APIMovieAsyncTask()
     private val genreTask = APIGenreAsyncTask()
     private val actorTask = APIActorAsyncTask()
-    private lateinit var movieData : Array<Movie>
-    private lateinit var genreData : Array<Genre>
-    private lateinit var actorData : Array<Actor>
+
 
     override fun onPreExecute() {
         super.onPreExecute()
@@ -32,9 +30,9 @@ class APIControlAsyncTask(private val context: Splash): AsyncTask<Any, Any, Bool
     }
     override fun doInBackground(vararg params: Any?): Boolean {
 
-        movieData = movieTask.get()
-        genreData = genreTask.get()
-        actorData = actorTask.get()
+         movieTask.get()
+        genreTask.get()
+        actorTask.get()
 
 
         return true
@@ -43,9 +41,6 @@ class APIControlAsyncTask(private val context: Splash): AsyncTask<Any, Any, Bool
     override fun onPostExecute(result: Boolean?) {
         super.onPostExecute(result)
         val sendIntent = Intent(context, Home::class.java)
-        SingletonActors.fillWithContentFromAPI(actorData)
-        SingletonGenres.fillWithContentFromAPI(genreData)
-        SingletonMovies.fillWithContentFromAPI(movieData)
         context.startActivity(sendIntent)
         context.finish()
 

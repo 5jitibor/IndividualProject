@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.usj.androidapps.alu100495.individualproject.R
 import es.usj.androidapps.alu100495.individualproject.adapter.ActorAdapterEditMovie
@@ -29,6 +30,10 @@ class EditMovie : AppCompatActivity() {
         type = intent.getSerializableExtra("code") as Int
         if(type== CODEEDITMOVIE){
             insertData()
+            tvType.text = "Edit Movie"
+        }
+        else{
+            tvType.text = "New Movie"
         }
 
         createRecycler()
@@ -64,8 +69,49 @@ class EditMovie : AppCompatActivity() {
             adapterGenre.genreList.addAll(list)
             adapterGenre.notifyDataSetChanged()
         }
+    }
 
+    fun check():Boolean{
+        var check = true
+        if(etRating.text.toString().equals("")){
+            etRating.error = "Introduce the number"
+            check = false
+        }
+        else if(etRating.text.toString().toFloat()>10.0){
+            etRating.error = "The number has to be less or equals than 10"
+            check = false
+        }
 
+        if(etVotes.text.toString().equals("")){
+            etVotes.error = "Introduce the number"
+            check = false
+        }
+        if(etLength.text.toString().equals("")){
+            etLength.error = "Introduce the number"
+            check = false
+        }
+        if(etRevenue.text.toString().equals("")){
+            etRevenue.error = "Introduce the number"
+            check = false
+        }
+        if(etYear.text.toString().equals("")){
+            etYear.error = "Introduce the number"
+            check = false
+        }
+        else if(etYear.text.toString().toInt()<1900){
+            etRating.error = "The number has to be more  than 1900"
+            check = false
+        }
+        if(etTitle.text.toString().equals("")){
+            etTitle.error = "Introduce the title"
+            check = false
+        }
+        if(etDirector.text.toString().equals("")){
+            etDirector.error = "Introduce the director"
+            check = false
+        }
+
+        return check
     }
 
 
@@ -78,15 +124,21 @@ class EditMovie : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_finish ->{
-                var like = false
-                if(type == CODEEDITMOVIE){
-                    like = movie.like
+                if(check()){
+                    var like = false
+                    if(type == CODEEDITMOVIE){
+                        like = movie.like
+                    }
+                    var movie = Movie(-1,etTitle.text.toString(),generateListGenres(),etDescripcion.text.toString(),etDirector.text.toString(),generateListActors(),etYear.text.toString().toInt(),etLength.text.toString().toInt(),etRating.text.toString().toFloat(),etVotes.text.toString().toInt(),etRevenue.text.toString().toFloat(),like)
+                    intent.putExtra("movie",movie)
+                    setResult(Activity.RESULT_OK,intent)
+                    finish()
                 }
-                var movie = Movie(-1,etTitle.text.toString(),generateListGenres(),etDescripcion.text.toString(),etDirector.text.toString(),generateListActors(),etYear.text.toString().toInt(),etLength.text.toString().toInt(),etRating.text.toString().toFloat(),etVotes.text.toString().toInt(),etRevenue.text.toString().toFloat(),like)
-                intent.putExtra("movie",movie)
-                setResult(Activity.RESULT_OK,intent)
-                finish()
+                else{
+                    Toast.makeText(this,"There are fields that are incomplete or incorrect",Toast.LENGTH_LONG)
+                }
             }
+
         }
         return super.onOptionsItemSelected(item)
     }
@@ -113,11 +165,11 @@ class EditMovie : AppCompatActivity() {
         return list
     }
     private fun createRecycler(){
-        var linealActor = LinearLayoutManager(this)
+        val linealActor = LinearLayoutManager(this)
         linealActor.orientation = LinearLayoutManager.HORIZONTAL
         rvActorsEdit.layoutManager = linealActor
 
-        var linealGenre = LinearLayoutManager(this)
+        val linealGenre = LinearLayoutManager(this)
         linealGenre.orientation = LinearLayoutManager.HORIZONTAL
         rvGenresEdit.layoutManager = linealGenre
 
@@ -135,7 +187,7 @@ class EditMovie : AppCompatActivity() {
         rvGenresEdit.adapter = adapterGenre
     }
     private fun generateListGenres(): ArrayList<Int>{
-        var list: ArrayList<Int> = arrayListOf()
+        val list: ArrayList<Int> = arrayListOf()
         for(genre in adapterGenre.genreList){
             list.add(genre.id)
         }
@@ -143,7 +195,7 @@ class EditMovie : AppCompatActivity() {
     }
 
     private fun generateListActors(): ArrayList<Int>{
-        var list: ArrayList<Int> = arrayListOf()
+        val list: ArrayList<Int> = arrayListOf()
         for(genre in adapterActor.actorList){
             list.add(genre.id)
         }
