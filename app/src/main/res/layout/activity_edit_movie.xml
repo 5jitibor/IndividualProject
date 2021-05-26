@@ -248,17 +248,6 @@
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
 
             <ImageButton
-                android:id="@+id/btnYear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="#FF0000"
-                app:layout_constraintStart_toEndOf="@+id/etYear"
-                app:layout_constraintTop_toBottomOf="@+id/etRevenue"
-                app:srcCompat="@drawable/ic_baseline_edit_24" />
-
-            <ImageButton
                 android:id="@+id/btnActors"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

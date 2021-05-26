@@ -117,7 +117,7 @@ class Home : AppCompatActivity() {
                     adapter.getItem(1).isResumed -> {
                         startActivity(Intent(this, FilterActor::class.java))
                     }
-                    else -> {
+                    adapter.getItem(2).isResumed -> {
                         startActivity(Intent(this, FilterGenre::class.java))
                     }
                 }

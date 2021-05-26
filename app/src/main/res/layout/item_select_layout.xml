@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
+                android:buttonTint="#FF0000"
                 android:checked="false"
                 android:theme="@style/CheckBox" />
 
