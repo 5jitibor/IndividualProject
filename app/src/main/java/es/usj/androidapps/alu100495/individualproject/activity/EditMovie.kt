@@ -98,8 +98,8 @@ class EditMovie : AppCompatActivity() {
             etYear.error = "Introduce the number"
             check = false
         }
-        else if(etYear.text.toString().toInt()<1900){
-            etRating.error = "The number has to be more  than 1900"
+        else if(etYear.text.toString().toInt()<=1900){
+            etYear.error = "The number has to be more  than 1900"
             check = false
         }
         if(etTitle.text.toString().equals("")){
