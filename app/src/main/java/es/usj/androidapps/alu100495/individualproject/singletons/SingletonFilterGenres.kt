@@ -8,7 +8,8 @@ object SingletonFilterGenres {
 
 
     fun filterGenres(genreList: ArrayList<Genre>): ArrayList<Genre>{
-        var list = genreList
+        var list: ArrayList<Genre> = arrayListOf()
+        list.addAll(genreList)
         var aux: ArrayList<Genre> = arrayListOf()
         if(like){
             aux = arrayListOf()

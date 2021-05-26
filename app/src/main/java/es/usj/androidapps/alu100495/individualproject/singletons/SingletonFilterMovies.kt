@@ -1,5 +1,6 @@
 package es.usj.androidapps.alu100495.individualproject.singletons
 
+import es.usj.androidapps.alu100495.individualproject.classData.Actor
 import es.usj.androidapps.alu100495.individualproject.classData.Movie
 
 object SingletonFilterMovies {
@@ -7,7 +8,8 @@ object SingletonFilterMovies {
 
 
     fun filterMovies(movieList: ArrayList<Movie>): ArrayList<Movie>{
-        var list = movieList
+        var list:ArrayList<Movie> = arrayListOf()
+        list.addAll(movieList)
         var aux: ArrayList<Movie> = arrayListOf()
         if(like){
             aux = arrayListOf()
@@ -16,13 +18,10 @@ object SingletonFilterMovies {
                     aux.add(movie)
                 }
             }
-            list=aux
-            /*if(aux.size != 0){
-                aux = arrayListOf()
-            }*/
-
+            list.clear()
+            list.addAll(aux)
         }
-
+        aux.clear()
         return list
 
     }

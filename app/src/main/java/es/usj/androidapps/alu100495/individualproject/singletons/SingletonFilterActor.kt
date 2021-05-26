@@ -8,7 +8,8 @@ object SingletonFilterActor {
 
 
     fun filterActor(actorList: ArrayList<Actor>): ArrayList<Actor>{
-        var list = actorList
+        var list:ArrayList<Actor> = arrayListOf()
+        list.addAll(actorList)
         var aux: ArrayList<Actor> = arrayListOf()
         if(like){
             aux = arrayListOf()
